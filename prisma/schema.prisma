@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Barber {
+  id             String        @id @default(uuid())
+  name           String
+  specialization String
+  appointments   Appointment[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Appointment {
+  id          String   @id @default(uuid())
+  barberId    String
+  barber      Barber   @relation(fields: [barberId], references: [id])
+  clientName  String
+  clientPhone String
+  date        String   // e.g., "2026-03-20"
+  time        String   // e.g., "14:00"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // A barber cannot have two appointments at the exact same date and time
+  @@unique([barberId, date, time])
+}
