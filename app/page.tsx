@@ -2,13 +2,7 @@ import BookingForm from './components/BookingForm';
 import { getBarbers } from './actions/booking';
 
 export default async function Home() {
-  let barbers: any[] = [];
-  try {
-    barbers = await getBarbers();
-  } catch (error) {
-    console.error("Error fetching data during Netlify build:", error);
-    barbers = []; 
-  }
+  const barbers = await getBarbers();
 
   return (
     <main>
